@@ -7,6 +7,58 @@
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  /* ---- nav buttons: scroll to section (don't rely on CSS smooth-scroll) ---- */
+  var HEADER_OFFSET = 88;
+
+  // Force an immediate jump. NOTE: CSS `scroll-behavior: smooth` applies to
+  // scrollTo()/scrollTop too, so we must temporarily neutralise it — otherwise
+  // the "instant" fallback animates as well, and fails for the same reason.
+  function jumpTo(top) {
+    var root = document.documentElement;
+    var prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, top);
+    root.style.scrollBehavior = prev;
+  }
+
+  function scrollToSection(target) {
+    var top = target.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET;
+    if (top < 0) top = 0;
+
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var startY = window.pageYOffset;
+
+    if (reduce) { jumpTo(top); return; }
+
+    try {
+      window.scrollTo({ top: top, behavior: "smooth" });
+    } catch (e) {
+      jumpTo(top);
+      return;
+    }
+
+    // If the smooth animation never got going (paused animation frames,
+    // background tab, cancelled scroll), force the jump so the button
+    // always works.
+    window.setTimeout(function () {
+      if (Math.abs(window.pageYOffset - startY) < 2 && Math.abs(top - startY) > 2) {
+        jumpTo(top);
+      }
+    }, 450);
+  }
+
+  document.querySelectorAll('.nav__links a[href^="#"]').forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      var id = link.getAttribute("href");
+      if (!id || id === "#") return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      scrollToSection(target);
+      if (history.replaceState) history.replaceState(null, "", id);
+    });
+  });
+
   /* ---- nav: add border once scrolled ---- */
   var nav = document.getElementById("nav");
   var onScroll = function () {
