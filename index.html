@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sam Yang — Robotics Engineer</title>
+  <meta name="description" content="Samuel Yang — robotics engineer building robots end to end, from mechanical design and embedded firmware to autonomy software." />
+  <meta name="theme-color" content="#f6f6f4" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Sam Yang — Robotics Engineer" />
+  <meta property="og:description" content="Building robots end to end — mechanical design, embedded firmware, and autonomy software." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/img/hexapod-poster.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#work">Skip to content</a>
+
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a class="nav__brand" href="#top">
+        <span class="nav__mark" aria-hidden="true"></span>
+        Sam&nbsp;Yang
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a class="nav__btn" href="#work">Work</a>
+        <a class="nav__btn nav__btn--primary" href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ===== HERO / INTRO ===== -->
+    <section class="hero container" id="intro">
+      <p class="eyebrow reveal">Robotics&nbsp;·&nbsp;Full-stack</p>
+      <h1 class="hero__title reveal">
+        Learning to build robotics end&nbsp;to&nbsp;end — from mechanical
+        design and embedded firmware to the software that makes a machine move.
+      </h1>
+      <p class="hero__lead reveal">
+        I'm Sam, a mechanical engineer (M.S., Purdue '26) interested in the
+        space where hardware meets software. I like working across the whole
+        stack of a robot — design, electronics, and control — and figuring out
+        how the pieces fit together.
+      </p>
+      <div class="hero__meta reveal">
+        <span>West Lafayette, IN</span>
+        <span class="dot" aria-hidden="true"></span>
+        <span>ROS&nbsp;2 · C++ · Python · SOLIDWORKS</span>
+      </div>
+    </section>
+
+    <!-- ===== FEATURED WORK ===== -->
+    <section class="work container" id="work">
+      <header class="section-head reveal">
+        <p class="eyebrow">Selected work</p>
+        <h2 class="section-title">A robot I'm building now</h2>
+      </header>
+
+      <!-- Featured: Hexapod -->
+      <article class="feature reveal">
+        <div class="feature__media">
+          <video
+            class="feature__video"
+            poster="assets/img/hexapod-poster.jpg"
+            autoplay muted loop playsinline preload="metadata">
+            <source src="assets/video/hexapod.mp4" type="video/mp4" />
+          </video>
+          <span class="feature__badge">Live · walking</span>
+        </div>
+
+        <div class="feature__body">
+          <div class="feature__topline">
+            <h3 class="feature__title">Hexapod Robot</h3>
+            <span class="feature__years">2025 — present</span>
+          </div>
+
+          <p class="feature__tag">A 3D-printed, six-legged walking robot</p>
+
+          <p>
+            A hexapod robot that extends an open source design from MakeYourPet. It drives 18 servos across six legs and
+            ROS&nbsp;2 Humble on a Jetson Orin Nano, with C++ firmware on a
+            Pimoroni Servo2040 (RP2040) handling the low-level servo control over
+            a USB binary protocol.
+          </p>
+          <p>
+            The control stack is deliberately modular — teleoperation feeds a gait
+            generator, which feeds an inverse-kinematics solver, which feeds the
+            servo driver. Each stage is its own ROS&nbsp;2 node, so any piece can be
+            tested in isolation. I re-derived the per-leg inverse kinematics for my
+            own link geometry and implemented an alternating tripod gait for stable
+            walking.
+          </p>
+
+          <div class="phase">
+            <p class="phase__label">Current phase — autonomy</p>
+            <p>
+              I'm now bringing the robot toward autonomous navigation using NVIDIA
+              <strong>nvblox</strong> for real-time 3D mapping. The interesting
+              challenge right now is compute: fitting live reconstruction and
+              planning inside the Orin's on-board budget, and deciding what has to
+              be trimmed or offloaded to keep everything running in real time.
+            </p>
+          </div>
+
+          <ul class="chips" aria-label="Technologies">
+            <li>ROS 2 Humble</li>
+            <li>Jetson Orin Nano</li>
+            <li>C++ firmware</li>
+            <li>RP2040 / Servo2040</li>
+            <li>Inverse kinematics</li>
+            <li>nvblox</li>
+            <li>SOLIDWORKS</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- CAD gallery -->
+      <div class="gallery reveal" aria-label="CAD design gallery">
+        <p class="gallery__label">From the CAD — designed part by part in SOLIDWORKS</p>
+        <div class="gallery__grid">
+          <button class="shot" data-full="assets/img/cad-1.jpg" aria-label="Open CAD image: leg link">
+            <img src="assets/img/cad-1.jpg" alt="SOLIDWORKS model of a hexapod leg link with dimensions" loading="lazy" />
+          </button>
+          <button class="shot" data-full="assets/img/cad-2.jpg" aria-label="Open CAD image: coxa joint">
+            <img src="assets/img/cad-2.jpg" alt="SOLIDWORKS model of a hexapod joint assembly" loading="lazy" />
+          </button>
+          <button class="shot" data-full="assets/img/cad-3.jpg" aria-label="Open CAD image: leg assembly">
+            <img src="assets/img/cad-3.jpg" alt="SOLIDWORKS model of a hexapod leg assembly" loading="lazy" />
+          </button>
+          <button class="shot" data-full="assets/img/cad-4.jpg" aria-label="Open CAD image: chassis plate">
+            <img src="assets/img/cad-4.jpg" alt="SOLIDWORKS model of the hexapod chassis plate" loading="lazy" />
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== OTHER PROJECTS ===== -->
+      <header class="section-head section-head--sub reveal">
+        <p class="eyebrow">Earlier projects</p>
+        <h2 class="section-title">Things I've built before</h2>
+        <p class="section-note">
+          Previously completed projects. Full write-ups are on
+          the way.
+        </p>
+      </header>
+
+      <ol class="projects" aria-label="Earlier projects">
+        <li class="project reveal">
+          <span class="project__index">01</span>
+          <div class="project__main">
+            <div class="project__head">
+              <h3 class="project__name">Senior Design — Interactive Dog Toy</h3>
+            </div>
+            <p class="project__desc">
+              A mechanical dog toy, built for autonomous play. Inspired by the whack a mole arcade game, a toy pops in and out based on the dogs proximity. A custom collar using UWB localization allows the toy to track the dog's position and give data on dog movement.
+            </p>
+          </div>
+          <span class="project__meta">Purdue · Capstone</span>
+        </li>
+
+        <li class="project reveal">
+          <span class="project__index">02</span>
+          <div class="project__main">
+            <div class="project__head">
+              <h3 class="project__name">LQR Self-Balancing Robot</h3>
+            </div>
+            <p class="project__desc">
+              An inverted-pendulum balancer stabilized with a Linear–Quadratic
+              Regulator — modeling the dynamics, tuning the controller, and
+              landing it on real hardware.
+            </p>
+          </div>
+          <span class="project__meta">ME 578 · Digital Control</span>
+        </li>
+
+        <li class="project reveal">
+          <span class="project__index">03</span>
+          <div class="project__main">
+            <div class="project__head">
+              <h3 class="project__name">Autonomous Boat Simulation — Virtual Robot X</h3>
+            </div>
+            <p class="project__desc">
+              A virtual robotic boat in ROS&nbsp;2 completing station-keeping,
+              wayfinding, and acoustic-perception tasks, with thrusters driven by
+              PID control and Kalman filtering.
+            </p>
+          </div>
+          <span class="project__meta">ME 597AS · Autonomous Systems</span>
+        </li>
+
+        <li class="project reveal">
+          <span class="project__index">04</span>
+          <div class="project__main">
+            <div class="project__head">
+              <h3 class="project__name">Mechatronics Final — Autonomous Ball Robot</h3>
+            </div>
+            <p class="project__desc">
+              A differential-drive robot that autonomously sorted colored balls into baskets for the
+              ME&nbsp;588 team competition — full design, fabrication, and Arduino
+              GIGA control. Took First Place and Best Robot Design.
+            </p>
+          </div>
+          <span class="project__meta">ME 588 · Mechatronics</span>
+        </li>
+
+        <li class="project reveal">
+          <span class="project__index">05</span>
+          <div class="project__main">
+            <div class="project__head">
+              <h3 class="project__name">Bed Box</h3>
+            </div>
+            <p class="project__desc">
+              A personal build to handle the difficulties of living in a shared dorm. Scored tens of thousands of views on the school' subreddit.
+            </p>
+          </div>
+          <span class="project__meta">Personal</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="contact container" id="contact">
+      <div class="contact__inner reveal">
+        <p class="eyebrow">Contact</p>
+        <ul class="contact__list">
+          <li>
+            <a class="contact__email" href="mailto:samyang.personal@gmail.com">
+              samyang.personal@gmail.com
+              <span class="contact__arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+          <li>
+            <a class="contact__email" href="https://www.linkedin.com/in/samuelyang1/"
+               target="_blank" rel="noopener noreferrer">
+              LinkedIn
+              <span class="contact__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>Sam Yang</span>
+      <span class="footer__year">© <span id="year">2026</span></span>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close image">×</button>
+    <img class="lightbox__img" id="lightboxImg" src="" alt="" />
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
