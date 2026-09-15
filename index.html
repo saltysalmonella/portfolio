@@ -85,11 +85,11 @@
             <span class="feature__years">2025 — present</span>
           </div>
 
-          <p class="feature__tag">A 3D-printed, six-legged walking robot</p>
+          <p class="feature__tag">A six-legged robot learning to navigate on its own</p>
 
           <p>
             A hexapod robot that extends an open source design from MakeYourPet. It drives 18 servos across six legs and
-            ROS&nbsp;2 Humble on a Jetson Orin Nano, with C++ firmware on a
+            runs ROS&nbsp;2 Jazzy on a Jetson Orin Nano, with C++ firmware on a
             Pimoroni Servo2040 (RP2040) handling the low-level servo control over
             a USB binary protocol.
           </p>
@@ -105,25 +105,112 @@
           <div class="phase">
             <p class="phase__label">Current phase — autonomy</p>
             <p>
-              I'm now bringing the robot toward autonomous navigation using NVIDIA
-              <strong>nvblox</strong> for real-time 3D mapping. The interesting
-              challenge right now is compute: fitting live reconstruction and
-              planning inside the Orin's on-board budget, and deciding what has to
-              be trimmed or offloaded to keep everything running in real time.
+              The robot has completed <strong>autonomous 40&nbsp;cm square routes</strong>
+              using onboard sensing and Nav2. In a September 2026 tethered trial,
+              it completed all six route legs with a 0.10&nbsp;m/s speed limit and
+              finished about 8&nbsp;cm from its starting centre, measured by onboard
+              odometry. The next goal is continuous exploration and mapping of
+              reachable rooms; whole-floor coverage is still in progress.
             </p>
           </div>
 
           <ul class="chips" aria-label="Technologies">
-            <li>ROS 2 Humble</li>
+            <li>ROS 2 Jazzy</li>
             <li>Jetson Orin Nano</li>
             <li>C++ firmware</li>
             <li>RP2040 / Servo2040</li>
             <li>Inverse kinematics</li>
             <li>nvblox</li>
+            <li>Nav2</li>
+            <li>cuVSLAM</li>
+            <li>SLAM Toolbox</li>
+            <li>RealSense D435i</li>
             <li>SOLIDWORKS</li>
           </ul>
         </div>
       </article>
+
+      <section aria-labelledby="autonomy-title">
+        <header class="section-head section-head--sub reveal">
+          <p class="eyebrow">Inside the hexapod</p>
+          <h2 class="section-title" id="autonomy-title">From sensing to autonomous motion</h2>
+          <p class="section-note">
+            I'm building the autonomy stack around the same gait and leg kinematics
+            used for manual walking. Perception, planning, and motion control run
+            onboard the Jetson, with a separate dashboard for monitoring trials.
+          </p>
+        </header>
+
+        <ol class="projects" aria-label="Hexapod autonomy engineering">
+          <li class="project reveal">
+            <span class="project__index">01</span>
+            <div class="project__main">
+              <div class="project__head">
+                <h3 class="project__name">Locate the robot and build a map</h3>
+              </div>
+              <p class="project__desc">
+                A RealSense D435i supplies stereo images, depth, and inertial data
+                for cuVSLAM motion estimation. Filtered lidar feeds SLAM Toolbox
+                for a 2D map, while nvblox reconstructs nearby geometry from depth.
+                Together, these give the navigation stack a position estimate and
+                maps of the space around the robot.
+              </p>
+            </div>
+            <span class="project__meta">Perception &amp; mapping</span>
+          </li>
+          <li class="project reveal">
+            <span class="project__index">02</span>
+            <div class="project__main">
+              <div class="project__head">
+                <h3 class="project__name">Plan around obstacles — and its own legs</h3>
+              </div>
+              <p class="project__desc">
+                Nav2 plans paths and produces velocity commands that pass through
+                a supervisor before reaching the gait controller. A hexapod's
+                moving legs appear in its own sensors, so I use leg geometry to
+                filter lidar and depth returns, and check clearance against the
+                space the body and legs sweep through. A lift-scan-lower routine
+                gives the lidar a clearer view before a route leg.
+              </p>
+            </div>
+            <span class="project__meta">Planning &amp; geometry</span>
+          </li>
+          <li class="project reveal">
+            <span class="project__index">03</span>
+            <div class="project__main">
+              <div class="project__head">
+                <h3 class="project__name">Keep the control loop responsive</h3>
+              </div>
+              <p class="project__desc">
+                Running mapping and navigation alongside 18-servo control exposed
+                scheduling delays on the Orin's six CPU cores. I moved the core
+                control chain to C++, tuned mapping and planner workloads, and
+                addressed blocking ROS communication. The supervisor pauses motion
+                when navigation data becomes stale; persistent faults trigger a
+                hold, with separate heartbeat, driver, and firmware watchdogs.
+              </p>
+            </div>
+            <span class="project__meta">C++ &amp; reliability</span>
+          </li>
+          <li class="project reveal">
+            <span class="project__index">04</span>
+            <div class="project__main">
+              <div class="project__head">
+                <h3 class="project__name">Turn short routes into room exploration</h3>
+              </div>
+              <p class="project__desc">
+                Recorded physical trials now include completed square routes at
+                several speed limits. The continuous mission layer selects
+                frontiers — boundaries between mapped and unexplored space — and
+                supports map checkpoints and route retries. I'm working toward
+                reliable travel across multiple rooms and reuse of saved maps;
+                those longer missions still need physical validation.
+              </p>
+            </div>
+            <span class="project__meta">Ongoing development</span>
+          </li>
+        </ol>
+      </section>
 
       <!-- CAD gallery -->
       <div class="gallery reveal" aria-label="CAD design gallery">
