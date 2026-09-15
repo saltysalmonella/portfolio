@@ -88,29 +88,28 @@
           <p class="feature__tag">A six-legged robot learning to navigate on its own</p>
 
           <p>
-            A hexapod robot that extends an open source design from MakeYourPet. It drives 18 servos across six legs and
-            runs ROS&nbsp;2 Jazzy on a Jetson Orin Nano, with C++ firmware on a
-            Pimoroni Servo2040 (RP2040) handling the low-level servo control over
-            a USB binary protocol.
+            This started with an open source design from MakeYourPet, which I've
+            been adapting and building on. It has 18 servos across six legs, a
+            Jetson Orin Nano running ROS&nbsp;2 Jazzy, and a Pimoroni Servo2040
+            (RP2040) running C++ firmware to control the servos over USB.
           </p>
           <p>
-            The control stack is deliberately modular — teleoperation feeds a gait
-            generator, which feeds an inverse-kinematics solver, which feeds the
-            servo driver. Each stage is its own ROS&nbsp;2 node, so any piece can be
-            tested in isolation. I re-derived the per-leg inverse kinematics for my
-            own link geometry and implemented an alternating tripod gait for stable
-            walking.
+            I split the walking software into separate ROS&nbsp;2 nodes so I can
+            work on one piece at a time: choosing a gait, turning foot positions
+            into joint angles, and sending commands to the servos. I worked out
+            the inverse kinematics for my leg geometry and added an alternating
+            tripod gait, where three legs move while the other three support the body.
           </p>
 
           <div class="phase">
             <p class="phase__label">Current phase — autonomy</p>
             <p>
-              The robot has completed <strong>autonomous 40&nbsp;cm square routes</strong>
-              using onboard sensing and Nav2. In a September 2026 tethered trial,
-              it completed all six route legs with a 0.10&nbsp;m/s speed limit and
-              finished about 8&nbsp;cm from its starting centre, measured by onboard
-              odometry. The next goal is continuous exploration and mapping of
-              reachable rooms; whole-floor coverage is still in progress.
+              It's now walking <strong>40&nbsp;cm square routes on its own</strong>
+              using its onboard sensors and Nav2. In one September 2026 test with
+              a tether attached, it finished all six parts of the route with a
+              10&nbsp;cm/s speed limit and came back about 8&nbsp;cm from where it
+              started, according to its own position estimate. Next, I want it to
+              explore and map the first floor. There's still work to do before that.
             </p>
           </div>
 
@@ -133,11 +132,11 @@
       <section aria-labelledby="autonomy-title">
         <header class="section-head section-head--sub reveal">
           <p class="eyebrow">Inside the hexapod</p>
-          <h2 class="section-title" id="autonomy-title">From sensing to autonomous motion</h2>
+          <h2 class="section-title" id="autonomy-title">Teaching it to find its way around</h2>
           <p class="section-note">
-            I'm building the autonomy stack around the same gait and leg kinematics
-            used for manual walking. Perception, planning, and motion control run
-            onboard the Jetson, with a separate dashboard for monitoring trials.
+            Once I had it walking with a controller, the next step was letting it
+            decide where to go. The Jetson handles the sensing, planning, and
+            walking onboard, and I use a separate dashboard to see what it's doing.
           </p>
         </header>
 
@@ -146,14 +145,14 @@
             <span class="project__index">01</span>
             <div class="project__main">
               <div class="project__head">
-                <h3 class="project__name">Locate the robot and build a map</h3>
+                <h3 class="project__name">Figuring out where it is</h3>
               </div>
               <p class="project__desc">
-                A RealSense D435i supplies stereo images, depth, and inertial data
-                for cuVSLAM motion estimation. Filtered lidar feeds SLAM Toolbox
-                for a 2D map, while nvblox reconstructs nearby geometry from depth.
-                Together, these give the navigation stack a position estimate and
-                maps of the space around the robot.
+                The robot needs to keep track of where it is as it walks. I'm
+                using a RealSense D435i with cuVSLAM to estimate its movement from
+                stereo images and inertial data. Lidar and SLAM Toolbox build a
+                2D map, while nvblox uses depth images to build a 3D view of nearby
+                surfaces. These maps help it work out where it can go.
               </p>
             </div>
             <span class="project__meta">Perception &amp; mapping</span>
@@ -162,15 +161,15 @@
             <span class="project__index">02</span>
             <div class="project__main">
               <div class="project__head">
-                <h3 class="project__name">Plan around obstacles — and its own legs</h3>
+                <h3 class="project__name">Getting around its own legs</h3>
               </div>
               <p class="project__desc">
-                Nav2 plans paths and produces velocity commands that pass through
-                a supervisor before reaching the gait controller. A hexapod's
-                moving legs appear in its own sensors, so I use leg geometry to
-                filter lidar and depth returns, and check clearance against the
-                space the body and legs sweep through. A lift-scan-lower routine
-                gives the lidar a clearer view before a route leg.
+                One tricky part: the robot sees its own moving legs as obstacles.
+                I use the leg geometry to filter those readings from the lidar
+                and depth camera, while checking that there's room for the whole
+                robot along a path. It can also lift its body for a clearer lidar
+                scan before walking. Nav2 plans the route, and a supervisor checks
+                its movement commands before they reach the walking controller.
               </p>
             </div>
             <span class="project__meta">Planning &amp; geometry</span>
@@ -179,15 +178,16 @@
             <span class="project__index">03</span>
             <div class="project__main">
               <div class="project__head">
-                <h3 class="project__name">Keep the control loop responsive</h3>
+                <h3 class="project__name">Making it all run together</h3>
               </div>
               <p class="project__desc">
-                Running mapping and navigation alongside 18-servo control exposed
-                scheduling delays on the Orin's six CPU cores. I moved the core
-                control chain to C++, tuned mapping and planner workloads, and
-                addressed blocking ROS communication. The supervisor pauses motion
-                when navigation data becomes stale; persistent faults trigger a
-                hold, with separate heartbeat, driver, and firmware watchdogs.
+                Mapping, planning, and controlling 18 servos keep the Orin's six
+                CPU cores busy. Getting everything to run together has meant
+                moving the core control code to C++, tuning how much work the
+                mapping and planner do, and tracking down delays in ROS messages.
+                If navigation data falls behind, the robot pauses. Longer faults
+                put it into a hold, with watchdogs in the software and firmware
+                watching for lost communication.
               </p>
             </div>
             <span class="project__meta">C++ &amp; reliability</span>
@@ -196,15 +196,15 @@
             <span class="project__index">04</span>
             <div class="project__main">
               <div class="project__head">
-                <h3 class="project__name">Turn short routes into room exploration</h3>
+                <h3 class="project__name">Next up: exploring rooms</h3>
               </div>
               <p class="project__desc">
-                Recorded physical trials now include completed square routes at
-                several speed limits. The continuous mission layer selects
-                frontiers — boundaries between mapped and unexplored space — and
-                supports map checkpoints and route retries. I'm working toward
-                reliable travel across multiple rooms and reuse of saved maps;
-                those longer missions still need physical validation.
+                The square routes are working at several speed limits now. I've
+                also built the software to pick the next unexplored edge of a
+                map, save progress, and retry routes when needed. The next step
+                is getting those pieces working reliably across multiple rooms,
+                then having it use a saved map on a later run. I still need to
+                test those longer trips on the robot.
               </p>
             </div>
             <span class="project__meta">Ongoing development</span>
