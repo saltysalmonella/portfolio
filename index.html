@@ -129,6 +129,51 @@
         </div>
       </article>
 
+      <section class="recovery" id="hexapod-rl" aria-labelledby="recovery-title">
+        <header class="section-head section-head--sub reveal">
+          <p class="eyebrow">Hexapod · Reinforcement learning</p>
+          <h2 class="section-title" id="recovery-title">Learning to get back on its feet</h2>
+        </header>
+
+        <div class="recovery__grid">
+          <div class="recovery__body reveal">
+            <p>
+              I trained a PPO policy in MuJoCo to right my 18-servo hexapod
+              from upside-down starts. I refined the rewards to reduce jitter,
+              acceleration, jerk, and motion near the servo limits, and varied
+              mass, friction, and servo strength during training.
+            </p>
+            <p>
+              Once upright, the learned recovery hands over to a standing
+              controller that settles the legs into their neutral pose.
+              This is a simulation experiment; transfer to the physical robot
+              remains to be tested.
+            </p>
+            <ul class="chips" aria-label="Recovery technologies">
+              <li>PPO</li>
+              <li>MuJoCo</li>
+              <li>PyTorch</li>
+              <li>Dynamics randomization</li>
+            </ul>
+          </div>
+
+          <figure class="recovery__demo reveal">
+            <video
+              class="recovery__video"
+              poster="assets/img/hexapod-uprighting-poster.jpg"
+              controls playsinline preload="metadata"
+              aria-label="Hexapod recovering from an upside-down position in simulation"
+              aria-describedby="recovery-caption">
+              <source src="assets/video/hexapod-uprighting.mp4" type="video/mp4" />
+              <a href="assets/video/hexapod-uprighting.mp4">Watch the uprighting video</a>.
+            </video>
+            <figcaption id="recovery-caption">
+              MuJoCo simulation · Learned recovery with a standing-controller handoff · 1× speed
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
       <section aria-labelledby="autonomy-title">
         <header class="section-head section-head--sub reveal">
           <p class="eyebrow">Inside the hexapod</p>

@@ -1,0 +1,14 @@
+{
+  "copied_utc": "2026-10-06T17:21:26.290377+00:00",
+  "video": "hexapod-uprighting.mp4",
+  "source_experiment": "limits_dr01",
+  "source_cohort": "nominal_candidate",
+  "source_trial": 0,
+  "source_sha256": "932ad1df2647e7002f9d9b0838018b01420dae34be097daee0698bd00ddd3aa4",
+  "duration_s": 12,
+  "playback_speed": 1,
+  "description": "Original simulation recording: PPO recovery followed by the unchanged neutral standing-controller handoff.",
+  "poster": "../img/hexapod-uprighting-poster.jpg",
+  "poster_frame_time_s": 0,
+  "poster_sha256": "cd577a9a7659b5071bbb40e75034cfcee44c4661dcf32fb9ed6497ac58f2a97d"
+}
