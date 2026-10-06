@@ -129,6 +129,45 @@
         </div>
       </article>
 
+      <section class="pcb" id="hexapod-pcb" aria-labelledby="pcb-title">
+        <header class="section-head section-head--sub reveal">
+          <p class="eyebrow">Hexapod · Electronics</p>
+          <h2 class="section-title" id="pcb-title">A custom control and power board</h2>
+        </header>
+
+        <div class="recovery__grid">
+          <div class="recovery__body reveal">
+            <p>
+              I designed a four-layer PCB to bring the hexapod's control and
+              power electronics onto one board. An RP2350 handles 20 servo
+              outputs, foot-contact inputs, and an IMU, while a protected
+              4S battery path supplies the servo rail and regulated Jetson power.
+            </p>
+            <p>
+              I organized the layout around short power loops and repeated servo
+              sections, with components on both sides. The design and routing are
+              complete; assembly and hardware bring-up are next.
+            </p>
+            <ul class="chips" aria-label="PCB specifications">
+              <li>KiCad</li>
+              <li>4 layers</li>
+              <li>110 × 140 mm</li>
+              <li>RP2350</li>
+            </ul>
+          </div>
+
+          <figure class="recovery__demo reveal">
+            <a class="pcb__model" href="assets/img/hexapod-control-board-v1.png"
+               aria-label="Open the full-size Hexapod Control Board V1 3D render">
+              <img src="assets/img/hexapod-control-board-v1.png"
+                   alt="Angled KiCad 3D model of Hexapod Control Board V1, with servo connectors along both sides, an XT90 battery connector, and four mounting holes"
+                   width="1568" height="1176" loading="lazy" decoding="async" />
+            </a>
+            <figcaption>Hexapod Control Board V1 · KiCad 3D render</figcaption>
+          </figure>
+        </div>
+      </section>
+
       <section class="recovery" id="hexapod-rl" aria-labelledby="recovery-title">
         <header class="section-head section-head--sub reveal">
           <p class="eyebrow">Hexapod · Reinforcement learning</p>
